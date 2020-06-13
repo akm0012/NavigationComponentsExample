@@ -1,10 +1,12 @@
 package com.andrewkingmarshall.navigationcomponentsexample
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_choose_recipient.*
@@ -28,7 +30,13 @@ class ChooseRecipientFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
         next_btn.setOnClickListener {
-            navController.navigate(R.id.action_chooseRecipientFragment_to_specifyAmountFragment)
+
+            if (!TextUtils.isEmpty(input_recipient.text.toString())) {
+                val bundle = bundleOf("recipient" to input_recipient.text.toString())
+                navController.navigate(R.id.action_chooseRecipientFragment_to_specifyAmountFragment, bundle)
+            } else {
+                input_recipient.error = "You must have something here."
+            }
         }
 
         cancel_btn.setOnClickListener {
